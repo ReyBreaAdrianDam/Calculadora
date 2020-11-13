@@ -1,5 +1,7 @@
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class Calculadora extends Frame{
     private String numCalc = "0";
     private double numGuardado = 0;
@@ -31,106 +33,107 @@ public class Calculadora extends Frame{
         for(String x : tecla) {
             Button boton = new Button(x);
             PANEL_BOTON.add(boton);
-            boton.addActionListener(e -> {
-                try{
-                    switch (boton.getLabel()) {
-                        case "+":
-                            if(!numCalc.equals("-0")) {
-                                estado = Operacion.SUMA;
-                                numGuardado = Double.parseDouble(numCalc);
-                            }
-                            numCalc = "0";
-                            break;
-                        case "-":
-                            if(!numCalc.equals("0")) {
-                                estado = Operacion.RESTA;
+            boton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        switch (boton.getLabel()) {
+                            case "+":
+                                if (!numCalc.equals("-0")) {
+                                    estado = Operacion.SUMA;
+                                    numGuardado = Double.parseDouble(numCalc);
+                                }
+                                numCalc = "0";
+                                break;
+                            case "-":
+                                if (!numCalc.equals("0")) {
+                                    estado = Operacion.RESTA;
+                                    numGuardado = Double.parseDouble(numCalc);
+                                    numCalc = "0";
+                                } else
+                                    numCalc = "-0";
+                                break;
+                            case "*":
+                                estado = Operacion.MULTIPLICACION;
                                 numGuardado = Double.parseDouble(numCalc);
                                 numCalc = "0";
-                            }
-                            else
-                                numCalc = "-0";
-                            break;
-                        case "*":
-                            estado = Operacion.MULTIPLICACION;
-                            numGuardado = Double.parseDouble(numCalc);
-                            numCalc = "0";
-                            break;
-                        case "/":
-                            estado = Operacion.DIVISION;
-                            numGuardado = Double.parseDouble(numCalc);
-                            numCalc = "0";
-                            break;
-                        case "=":
-                            //Estado de la operación
-                            switch (estado) {
-                                case SUMA:
-                                    numCalc = String.valueOf(numGuardado + Double.parseDouble(numCalc));
-                                    estado = null;
-                                    break;
-                                case RESTA:
-                                    numCalc = String.valueOf(numGuardado - Double.parseDouble(numCalc));
-                                    estado = null;
-                                    break;
-                                case MULTIPLICACION:
-                                    numCalc = String.valueOf(numGuardado * Double.parseDouble(numCalc));
-                                    estado = null;
-                                    break;
-                                case DIVISION:
-                                    numCalc = String.valueOf(numGuardado / Double.parseDouble(numCalc));
-                                    estado = null;
-                                    break;
-                            }
-                            break;
-                        case "%":
-                            switch (estado) {
-                                case SUMA:
-                                    numCalc = String.valueOf((numGuardado + Double.parseDouble(numCalc))/100);
-                                    estado = null;
-                                    break;
-                                case RESTA:
-                                    numCalc = String.valueOf((numGuardado - Double.parseDouble(numCalc))/100);
-                                    estado = null;
-                                    break;
-                                case MULTIPLICACION:
-                                    numCalc = String.valueOf((numGuardado * Double.parseDouble(numCalc))/100);
-                                    estado = null;
-                                    break;
-                                case DIVISION:
-                                    numCalc = String.valueOf((numGuardado / Double.parseDouble(numCalc))/100);
-                                    estado = null;
-                                    break;
-                            }
-                            break;
-                        case "C":
-                            estado = null;
-                            numCalc = "0";
-                            numGuardado = 0;
-                            break;
-                        case "CE":
-                            numCalc = "0";
-                            break;
-                        case "Del":
-                            if (!numCalc.equals(""))
-                                numCalc = numCalc.substring(0, numCalc.length() - 1);
-                            if(numCalc.equals(""))
+                                break;
+                            case "/":
+                                estado = Operacion.DIVISION;
+                                numGuardado = Double.parseDouble(numCalc);
                                 numCalc = "0";
-                            break;
-                        case ".":
-                            numCalc += boton.getLabel();
-                            break;
-                        default:
-                            if(numCalc.equals("0"))
-                                numCalc = boton.getLabel();
-                            else if(numCalc.equals("-0"))
-                                numCalc = "-" + boton.getLabel();
-                            else
+                                break;
+                            case "=":
+                                //Estado de la operación
+                                switch (estado) {
+                                    case SUMA:
+                                        numCalc = String.valueOf(numGuardado + Double.parseDouble(numCalc));
+                                        estado = null;
+                                        break;
+                                    case RESTA:
+                                        numCalc = String.valueOf(numGuardado - Double.parseDouble(numCalc));
+                                        estado = null;
+                                        break;
+                                    case MULTIPLICACION:
+                                        numCalc = String.valueOf(numGuardado * Double.parseDouble(numCalc));
+                                        estado = null;
+                                        break;
+                                    case DIVISION:
+                                        numCalc = String.valueOf(numGuardado / Double.parseDouble(numCalc));
+                                        estado = null;
+                                        break;
+                                }
+                                break;
+                            case "%":
+                                switch (estado) {
+                                    case SUMA:
+                                        numCalc = String.valueOf((numGuardado + Double.parseDouble(numCalc)) / 100);
+                                        estado = null;
+                                        break;
+                                    case RESTA:
+                                        numCalc = String.valueOf((numGuardado - Double.parseDouble(numCalc)) / 100);
+                                        estado = null;
+                                        break;
+                                    case MULTIPLICACION:
+                                        numCalc = String.valueOf((numGuardado * Double.parseDouble(numCalc)) / 100);
+                                        estado = null;
+                                        break;
+                                    case DIVISION:
+                                        numCalc = String.valueOf((numGuardado / Double.parseDouble(numCalc)) / 100);
+                                        estado = null;
+                                        break;
+                                }
+                                break;
+                            case "C":
+                                estado = null;
+                                numCalc = "0";
+                                numGuardado = 0;
+                                break;
+                            case "CE":
+                                numCalc = "0";
+                                break;
+                            case "Del":
+                                if (!numCalc.equals(""))
+                                    numCalc = numCalc.substring(0, numCalc.length() - 1);
+                                if (numCalc.equals(""))
+                                    numCalc = "0";
+                                break;
+                            case ".":
                                 numCalc += boton.getLabel();
-                            break;
+                                break;
+                            default:
+                                if (numCalc.equals("0"))
+                                    numCalc = boton.getLabel();
+                                else if (numCalc.equals("-0"))
+                                    numCalc = "-" + boton.getLabel();
+                                else
+                                    numCalc += boton.getLabel();
+                                break;
+                        }
+                        TEXTO.setText(numCalc);
+                    } catch (Exception ex) {
+                        TEXTO.setText("ERROR");
                     }
-                    TEXTO.setText(numCalc);
-                }
-                catch (Exception ex){
-                    TEXTO.setText("ERROR");
                 }
             });
         }
